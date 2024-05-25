@@ -58,22 +58,22 @@ function mover(){
     myFunctionList.removeChild(el);
     console.log(item)
     myBlock.innerHTML = "Move:"+item;
-    if(item == "left"){
+    if(item === "left"){
       myBlock.style.left = cur.left - cur.width + "px";
     }
-    if(item == "right"){
+    if(item === "right"){
       myBlock.style.left = cur.left + cur.width + "px";
     }
-    if(item == "up"){
+    if(item === "up"){
       myBlock.style.top = cur.top - cur.height + "px";
     }
-    if(item == "down"){
+    if(item === "down"){
       myBlock.style.top = cur.top + cur.height + "px";
     }
     setTimeout(mover,300);
   } else {
     myBlock.innerHTML = "Set Path";
-    return;
+
   }
 }
 
