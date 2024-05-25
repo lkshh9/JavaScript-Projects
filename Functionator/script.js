@@ -1,6 +1,7 @@
 let myBlock;
 let myFunctionList;
 let funList = [];
+const movementArray = ["right","left","up","down"];
 document.addEventListener("DOMContentLoaded",() => {
   console.log("ready");
   myBlock = document.createElement("div");
@@ -38,11 +39,46 @@ document.addEventListener("keydown",(e) => {
   else if(kiCode === 67){
     myBlock.style.backgroundColor=randomColor();
   }
+  else if(kiCode === 82){
+    let temp = movementArray[Math.floor(Math.random()*movementArray.length)];
+    addFun(temp);
+  }
+  else if(kiCode === 13 || kiCode === 32){  // enter or space key
+    mover();
+  }
   console.log(kiCode);
 })
 
+function mover(){
+  if(funList.length>0){
+    let cur = myBlock.getBoundingClientRect();   // this will give us current coordinates of myBlock element
+    console.log(cur);
+    let el = funList.shift(); // Remove first item from the list
+    let item = el.textContent.replace("+","");
+    myFunctionList.removeChild(el);
+    console.log(item)
+    myBlock.innerHTML = "Move:"+item;
+    if(item == "left"){
+      myBlock.style.left = cur.left - cur.width + "px";
+    }
+    if(item == "right"){
+      myBlock.style.left = cur.left + cur.width + "px";
+    }
+    if(item == "up"){
+      myBlock.style.top = cur.top - cur.height + "px";
+    }
+    if(item == "down"){
+      myBlock.style.top = cur.top + cur.height + "px";
+    }
+    setTimeout(mover,300);
+  } else {
+    myBlock.innerHTML = "Set Path";
+    return;
+  }
+}
+
 function addFun(val){
-  funList.push(val);
+
   let span = document.createElement("span")
   span.textContent = "+"+val
   span.style.padding = "10px";
@@ -55,8 +91,16 @@ function addFun(val){
     this.style.backgroundColor = "white";
     this.style.color = "black";
 });
+  span.addEventListener("click",function(){
+    let curindex = funList.indexOf(this);
+    console.log(curindex);
+    let tempRemove = funList.splice(curindex,1);
+    console.log(tempRemove);
+    myFunctionList.removeChild(this);
+  })
 
   myFunctionList.appendChild(span);
+  funList.push(span); // instead of adding value to the list, add it into the element, this will give us the ability to reference that element
   console.log(funList);
 }
 
